@@ -17,7 +17,7 @@ public class Main {
         inventory.addProduct(ProductToADD);
         ProductToADD = new Product("Antibiotic", "antibiotic", 25.75, 30);
         inventory.addProduct(ProductToADD);
-        ProductToADD = new Product("Vitamin C", "vitamin v", 8.00, 100);
+        ProductToADD = new Product("Vitamin C", "vitamin c", 8.00, 100);
         inventory.addProduct(ProductToADD);
         ProductToADD = new Product("Thorazine", "thorazine", 30.00, 15);
         inventory.addProduct(ProductToADD);
@@ -31,17 +31,20 @@ public class Main {
         Order order = null;
         ManageCustomerDiscount discountManager = new ManageCustomerDiscount();
         ArrayList<Order> doctorOrders = new ArrayList<>();
-        Doctor doctor = new Doctor("Dr. Smith", "D001", doctorOrders, inventory);
+        Doctor doctor = new Doctor("Admin", "D001", doctorOrders, inventory);
         System.out.println("Doctor login:");
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
         Login doctorLogin = new Login(username, password);
-        if (!doctorLogin.login()) {
-            System.out.println("Login failed. Exiting program.");
-            scanner.close();
-            return;
+        while (!doctorLogin.login()) {
+            System.out.println("Login failed, Try Again.");
+            System.out.print("Enter username: ");
+            username = scanner.nextLine();
+            System.out.print("Enter password: ");
+            password = scanner.nextLine();
+            doctorLogin = new Login(username, password);
         }
         int backTOMenu = 0;
         while (true) {
@@ -50,7 +53,8 @@ public class Main {
             System.out.println("2. View inventory");
             System.out.println("3. Update inventory");
             System.out.println("4. Add product to inventory");
-            System.out.println("5. Exit");
+            System.out.println("5. Display All Doctor's Orders");
+            System.out.println("6. Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -58,7 +62,9 @@ public class Main {
                 case 1:
                     System.out.print("Enter customer ID: ");
                     String customerId = scanner.nextLine();
-                    customer = new Customer("Customer " + customerId, customerId, "000-000-0000");
+                    System.out.print("Enter customer Phone Number: ");
+                    String customerPhone = scanner.nextLine();
+                    customer = new Customer("Customer " + customerId, customerId, customerPhone);
                     order = doctor.createNewOrder(customer, discountManager);
                     boolean orderComplete = false;
                     while (!orderComplete) {
@@ -129,9 +135,7 @@ public class Main {
                     System.out.println("Add Product to Inventory:");
                     System.out.print("Enter product name: ");
                     String productName = scanner.nextLine();
-                    System.out.print("Enter product ID: ");
-                    String productIdToAdd = scanner.nextLine();
-                    productIdToAdd = productIdToAdd.toLowerCase();
+                    String productIdToAdd = productName.toLowerCase();
                     System.out.print("Enter price per unit: ");
                     double productPrice = scanner.nextDouble();
                     System.out.print("Enter quantity: ");
@@ -150,6 +154,14 @@ public class Main {
                     }
                     break;
                 case 5:
+                    doctor.displayOrders();
+                    backTOMenu = 0;
+                    while (backTOMenu != 1) {
+                        System.out.println("Press 1 to Back to Menu");
+                        backTOMenu = scanner.nextInt();
+                    }
+                    break;
+                case 6:
                     doctorLogin.logout();
                     System.out.println("Exiting program.");
                     scanner.close();
