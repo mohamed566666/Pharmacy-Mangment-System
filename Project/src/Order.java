@@ -64,6 +64,7 @@ public class Order {
     public void finalizeOrder() {
         status = true;
         discountManager.checkAndUpdate(customer.getcustomerId());
+        System.out.println("Order has been finalized.");
     }
 
     // Cancel the order and clear the ordered products
