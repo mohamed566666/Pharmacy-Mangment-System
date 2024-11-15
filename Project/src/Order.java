@@ -100,6 +100,18 @@ public class Order {
         for (Product product : orderedProducts) {
             System.out.println(" - " + product.getName() + ": " + product.getQuantity() + " units, Price per unit: $"+ product.getPrice());
         }
-        System.out.println("Total Price: " + TotalPrice);
+        System.out.println("Total Price: " + calculateTotalPrice());
+    }
+    public void displayOrderDetailsforHistory() {
+        System.out.println("\nOrder Details:");
+        System.out.println(" customer :");
+        customer.display();
+        System.out.println("Doctor: " + doctor.getName());
+        System.out.println("Status: " + (status ? "Completed" : "Incomplete"));
+        System.out.println("Products ordered:");
+        for (Product product : orderedProducts) {
+            System.out.println(" - " + product.getName() + ": " + product.getQuantity() + " units, Price per unit: $"+ product.getPrice());
+        }
+        System.out.println("Final Price: " + TotalPrice);
     }
 }
