@@ -1,42 +1,38 @@
 import java.util.ArrayList;
 
-@SuppressWarnings("unused")
 public class Doctor {
     private String name;
     private String doctorId;
-    private String userName;
-    private String password;
-
     private ArrayList<Order> currentOrders;
     private Inventory inventory;
 
-    public Doctor(String name, String doctorId, String userName, String password, ArrayList<Order> currentOrders,
-            Inventory inventory) {
+    // constructor
+    public Doctor(String name, String doctorId, ArrayList<Order> currentOrders, Inventory inventory) {
         this.name = name;
         this.doctorId = doctorId;
-        this.userName = userName;
-        this.password = password;
         this.currentOrders = currentOrders;
         this.inventory = inventory;
     }
 
+    // method to get Doctor's Name
     public String getName() {
         return name;
     }
 
+    // method to get Doctor's ID
     public String getDoctorId() {
         return doctorId;
     }
 
-    // Create a new order for a customer
-    public Order createNewOrder(Customer customer , ManageCustomerDiscount dis) {
-        Order newOrder = new Order(this, customer,dis);
+    // Method to Create a new order for a customer
+    public Order createNewOrder(Customer customer, ManageCustomerDiscount dis) {
+        Order newOrder = new Order(this, customer, dis);
         currentOrders.add(newOrder);
         System.out.println("Created a new order for " + customer.getname());
         return newOrder;
     }
 
-    // Add a product to an order by checking the inventory first
+    // Method to Add a product to an order by checking the inventory first
     public void addProductToOrder(Order order, String productId, int quantity) {
         if (inventory == null) {
             System.out.println("Inventory is not initialized.");
@@ -55,10 +51,11 @@ public class Doctor {
             System.out.println("Added " + quantity + " units of " + product.getName() + " to the order.");
         } else {
             System.out.println("Insufficient stock for product: " + product.getName());
+            System.out.println("failled to Add this product " + product.getName());
         }
     }
 
-    // Finalize an order
+    //Method Finalize an order
     public void finalizeOrder(Order order) {
         if (order.getOrderedProducts().isEmpty()) {
             System.out.println("No products in the order to finalize.");
@@ -68,21 +65,25 @@ public class Doctor {
         }
     }
 
-    // Cancel an order
+    //Method Cancel an order
     public void cancelOrder(Order order) {
-        currentOrders.remove(order);
-        order.cancelOrder();
-        System.out.println("Order has been canceled.");
+        if (currentOrders.contains(order)) {
+            order.cancelOrder(inventory);
+            currentOrders.remove(order);
+            System.out.println("Order has been canceled and removed.");
+        } else {
+            System.out.println("Order not found in current orders.");
+        }
     }
 
-    // View inventory products
+    //Method View inventory products
     public void displayOrders() {
         for (var order : currentOrders) {
             order.displayOrderDetails();
         }
     }
 
-    // Add a new product to the inventory
+    //Method to Add a new product to the inventory
     public void addProductToInventory(Product product) {
         if (inventory == null) {
             System.out.println("Inventory is not initialized.");
