@@ -40,7 +40,7 @@ public class Product {
 
   // method to decrease Quantity of The product
   public void decreasequantity(int amount) {
-    if (quantity >= amount) // check that amount is smaller than Available Quantity to Avoid get Negative Quantity
+    if (quantity >= amount) // check that amount is smaller than Available Quantity to Avoid get NegativeQuantity
       quantity -= amount;
   }
 
