@@ -5,27 +5,27 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Inventory inventory = new Inventory();
-        Product ToADD = new Product("Vitamin D", "P005", 25.50, 20);
+        Product ToADD = new Product("Vitamin D", "vitamin d", 25.50, 20);
         inventory.addProduct(ToADD);
-        ToADD = new Product("Oblex", "P006", 35.00, 15);
+        ToADD = new Product("Oblex", "oblex", 35.00, 15);
         inventory.addProduct(ToADD);
-        ToADD = new Product("Concor", "P007", 55.00, 5);
+        ToADD = new Product("Tusskan", "tusskan", 55.00, 5);
         inventory.addProduct(ToADD);
-        ToADD = new Product("Concor", "P008", 55.00, 5);
+        ToADD = new Product("Concor", "concor", 55.00, 5);
         inventory.addProduct(ToADD);
-        ToADD = new Product("Aspirin", "P001", 12.50, 50);
+        ToADD = new Product("Aspirin", "aspirin", 12.50, 50);
         inventory.addProduct(ToADD);
-        ToADD = new Product("Antibiotic", "P002", 25.75, 30);
+        ToADD = new Product("Antibiotic", "antibiotic", 25.75, 30);
         inventory.addProduct(ToADD);
-        ToADD = new Product("Vitamin C", "P003", 8.00, 100);
+        ToADD = new Product("Vitamin C", "vitamin v", 8.00, 100);
         inventory.addProduct(ToADD);
-        ToADD = new Product("Thorazine", "P004", 30.00, 15);
+        ToADD = new Product("Thorazine", "thorazine", 30.00, 15);
         inventory.addProduct(ToADD);
-        ToADD = new Product("Congestal", "P005", 40.00, 50);
+        ToADD = new Product("Congestal", "congestal", 40.00, 50);
         inventory.addProduct(ToADD);
-        ToADD = new Product("123", "P006", 15.00, 30);
+        ToADD = new Product("123", "123", 15.00, 30);
         inventory.addProduct(ToADD);
-        ToADD = new Product("Ansoline", "P007", 60.00, 30);
+        ToADD = new Product("Ansoline", "ansoline", 60.00, 30);
         inventory.addProduct(ToADD);
         Customer customer = null;
         Order order = null;
@@ -43,6 +43,7 @@ public class Main {
             scanner.close();
             return;
         }
+        int backTOMenu = 0;
         while (true) {
             System.out.println("\nMenu:");
             System.out.println("1. Create new order");
@@ -73,6 +74,7 @@ public class Main {
                             case 1:
                                 System.out.print("Enter product ID to add to order: ");
                                 String productId = scanner.nextLine();
+                                productId = productId.toLowerCase();
                                 System.out.print("Enter quantity: ");
                                 int quantity = scanner.nextInt();
                                 scanner.nextLine();
@@ -93,19 +95,35 @@ public class Main {
                                 System.out.println("Invalid choice. Please try again.");
                         }
                     }
+                    backTOMenu = 0;
+                    while (backTOMenu != 1) {
+                        System.out.println("Press 1 to Back to Menu");
+                        backTOMenu = scanner.nextInt();
+                    }
                     break;
                 case 2:
                     System.out.println("Inventory:");
                     inventory.display();
+                    backTOMenu = 0;
+                    while (backTOMenu != 1) {
+                        System.out.println("Press 1 to Back to Menu");
+                        backTOMenu = scanner.nextInt();
+                    }
                     break;
                 case 3:
                     System.out.println("Update Inventory:");
                     System.out.print("Enter product ID to update: ");
                     String productIdToUpdate = scanner.nextLine();
+                    productIdToUpdate = productIdToUpdate.toLowerCase();
                     System.out.print("Enter quantity to update (positive for increase, negative for decrease): ");
                     int quantityUpdate = scanner.nextInt();
                     scanner.nextLine();
                     doctor.updateProductQuantity(productIdToUpdate, quantityUpdate, quantityUpdate > 0);
+                    backTOMenu = 0;
+                    while (backTOMenu != 1) {
+                        System.out.println("Press 1 to Back to Menu");
+                        backTOMenu = scanner.nextInt();
+                    }
                     break;
                 case 4:
                     System.out.println("Add Product to Inventory:");
@@ -113,13 +131,23 @@ public class Main {
                     String productName = scanner.nextLine();
                     System.out.print("Enter product ID: ");
                     String productIdToAdd = scanner.nextLine();
+                    productIdToAdd = productIdToAdd.toLowerCase();
                     System.out.print("Enter price per unit: ");
                     double productPrice = scanner.nextDouble();
                     System.out.print("Enter quantity: ");
                     int productQuantity = scanner.nextInt();
+                    if (productQuantity < 0) {
+                        System.out.println("Quantity can't be Negative");
+                        break;
+                    }
                     scanner.nextLine();
                     Product newProduct = new Product(productName, productIdToAdd, productPrice, productQuantity);
                     doctor.addProductToInventory(newProduct);
+                    backTOMenu = 0;
+                    while (backTOMenu != 1) {
+                        System.out.println("Press 1 to Back to Menu");
+                        backTOMenu = scanner.nextInt();
+                    }
                     break;
                 case 5:
                     doctorLogin.logout();
