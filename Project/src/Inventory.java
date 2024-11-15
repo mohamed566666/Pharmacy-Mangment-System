@@ -30,8 +30,8 @@ public class Inventory {
     public void updateQuantity(Product product, int quantity, boolean add) {
         if (add) {
             product.increasequantity(quantity);
-        } else if (product.getQuantity() >= quantity) {
-            product.decreasequantity(quantity);
+        } else if (product.getQuantity() >= Math.abs(quantity)) {
+            product.decreasequantity(Math.abs(quantity));
         } else {
             System.out.println("Insufficient quantity to reduce.");
         }
