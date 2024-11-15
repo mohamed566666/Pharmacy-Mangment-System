@@ -76,8 +76,9 @@ public class Doctor {
 
     // Method View inventory products
     public void displayOrders() {
+        System.out.println("\nNumber of Complated Orders : "+currentOrders.size());
         for (var order : currentOrders) {
-            order.displayOrderDetails();
+            order.displayOrderDetailsforHistory();
         }
     }
 
