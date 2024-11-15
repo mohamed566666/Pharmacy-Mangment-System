@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 public class Order {
     private Doctor doctor;
     private Customer customer;
@@ -6,6 +7,7 @@ public class Order {
     private boolean status;
     private ManageCustomerDiscount discountManager;
 
+    // constructor
     public Order(Doctor doctor, Customer customer, ManageCustomerDiscount discountManager) {
         this.doctor = doctor;
         this.customer = customer;
@@ -14,20 +16,26 @@ public class Order {
         this.discountManager = discountManager;
     }
 
+    // method to get object of this customer
     public Customer getcustomer() {
         return customer;
     }
 
-    // Add a product with the specified quantity to the order
+    // Method to Add a product with the specified quantity to the order
     public void addProductToOrder(Product product, int quantity) {
+        for (Product p : orderedProducts) {
+            if (p.getProductId().equals(product.getProductId())) {
+                p.increasequantity(quantity);
+                return;
+            }
+        }
         orderedProducts.add(new Product(product.getName(), product.getProductId(), product.getPrice(), quantity));
-        System.out.println(quantity + " units of " + product.getName() + " added to the order.");
     }
 
-    // Remove a product from the order by productId
+    // Method to Remove a product from the order by productId
     public void removeProductFromOrder(String productId) {
         for (int i = 0; i < orderedProducts.size(); i++) {
-            if (orderedProducts.get(i).getProductId() == productId) {
+            if (orderedProducts.get(i).getProductId().equals(productId)) {
                 System.out.println(orderedProducts.get(i).getName() + " removed from the order.");
                 orderedProducts.remove(i);
                 return;
@@ -47,23 +55,30 @@ public class Order {
         for (Product product : orderedProducts) {
             total += product.getPrice() * product.getQuantity();
         }
-        double discount = discountManager.calculateDiscount(customer.getcustomerId());    // for check 
+        double discount = discountManager.calculateDiscount(customer.getcustomerId());
         total -= total * discount;
         return total;
-    }   
+    }
 
     // Finalize the order and set the status to complete
     public void finalizeOrder() {
         status = true;
         discountManager.checkAndUpdate(customer.getcustomerId());
-        System.out.println("Order has been finalized.");
     }
 
     // Cancel the order and clear the ordered products
-    public void cancelOrder() {
+    public void cancelOrder(Inventory inventory) {
+        // Return products to inventory Again
+        for (Product product : orderedProducts) {
+            Product inventoryProduct = inventory.getProduct(product.getProductId());
+            if (inventoryProduct != null) {
+                inventory.updateQuantity(inventoryProduct, product.getQuantity(), true); // Add the quantity back
+            }
+        }
+        // clear order list
         orderedProducts.clear();
         status = false;
-        System.out.println("Order has been canceled.");
+        System.out.println("Order has been canceled, and quantities have been returned to inventory.");
     }
 
     // Check if the order is complete
@@ -80,8 +95,7 @@ public class Order {
         System.out.println("Status: " + (status ? "Completed" : "Incomplete"));
         System.out.println("Products ordered:");
         for (Product product : orderedProducts) {
-            System.out.println(" - " + product.getName() + ": " + product.getQuantity() + " units, Price per unit: $"
-                    + product.getPrice());
+            System.out.println(" - " + product.getName() + ": " + product.getQuantity() + " units, Price per unit: $"+ product.getPrice());
         }
         System.out.println("Total Price: " + calculateTotalPrice());
     }
