@@ -55,35 +55,33 @@ public class Doctor {
         }
     }
 
-    //Method Finalize an order
+    // Method Finalize an order
     public void finalizeOrder(Order order) {
         if (order.getOrderedProducts().isEmpty()) {
             System.out.println("No products in the order to finalize.");
         } else {
             order.finalizeOrder();
-            System.out.println("Order has been finalized.");
         }
     }
 
-    //Method Cancel an order
+    // Method Cancel an order
     public void cancelOrder(Order order) {
         if (currentOrders.contains(order)) {
             order.cancelOrder(inventory);
-            currentOrders.remove(order);
-            System.out.println("Order has been canceled and removed.");
+            currentOrders.remove(order); // Remove the order from the list
         } else {
             System.out.println("Order not found in current orders.");
         }
     }
 
-    //Method View inventory products
+    // Method View inventory products
     public void displayOrders() {
         for (var order : currentOrders) {
             order.displayOrderDetails();
         }
     }
 
-    //Method to Add a new product to the inventory
+    // Method to Add a new product to the inventory
     public void addProductToInventory(Product product) {
         if (inventory == null) {
             System.out.println("Inventory is not initialized.");
