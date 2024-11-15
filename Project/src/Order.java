@@ -6,6 +6,7 @@ public class Order {
     private ArrayList<Product> orderedProducts;
     private boolean status;
     private ManageCustomerDiscount discountManager;
+    private double TotalPrice;
 
     // constructor
     public Order(Doctor doctor, Customer customer, ManageCustomerDiscount discountManager) {
@@ -64,6 +65,7 @@ public class Order {
     public void finalizeOrder() {
         status = true;
         discountManager.checkAndUpdate(customer.getcustomerId());
+        TotalPrice = calculateTotalPrice();
         System.out.println("Order has been finalized.");
     }
 
@@ -89,7 +91,7 @@ public class Order {
 
     // Display the order details
     public void displayOrderDetails() {
-        System.out.println("Order Details:");
+        System.out.println("\nOrder Details:");
         System.out.println(" customer :");
         customer.display();
         System.out.println("Doctor: " + doctor.getName());
@@ -98,6 +100,6 @@ public class Order {
         for (Product product : orderedProducts) {
             System.out.println(" - " + product.getName() + ": " + product.getQuantity() + " units, Price per unit: $"+ product.getPrice());
         }
-        System.out.println("Total Price: " + calculateTotalPrice());
+        System.out.println("Total Price: " + TotalPrice);
     }
 }
