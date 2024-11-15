@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+@SuppressWarnings("unused")
 public class Order {
     private Doctor doctor;
     private Customer customer;
@@ -94,7 +94,6 @@ public class Order {
         System.out.println("\nOrder Details:");
         System.out.println(" customer :");
         customer.display();
-        System.out.println("Doctor: " + doctor.getName());
         System.out.println("Status: " + (status ? "Completed" : "Incomplete"));
         System.out.println("Products ordered:");
         for (Product product : orderedProducts) {
@@ -106,7 +105,6 @@ public class Order {
         System.out.println("\nOrder Details:");
         System.out.println(" customer :");
         customer.display();
-        System.out.println("Doctor: " + doctor.getName());
         System.out.println("Status: " + (status ? "Completed" : "Incomplete"));
         System.out.println("Products ordered:");
         for (Product product : orderedProducts) {
