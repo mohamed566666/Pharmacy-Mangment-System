@@ -31,13 +31,28 @@ public class Main {
         Order order = null;
         ManageCustomerDiscount discountManager = new ManageCustomerDiscount();
         ArrayList<Order> doctorOrders = new ArrayList<>();
-        Doctor doctor = new Doctor("Admin", "D001", doctorOrders, inventory);
+        ArrayList<Order> doctorOrders1 = new ArrayList<>();
+        ArrayList<Order> doctorOrders2 = new ArrayList<>();
+        ArrayList<Order> doctorOrders3 = new ArrayList<>();
+        ArrayList<Order> doctorOrders4 = new ArrayList<>();
+        Doctor doctor = new Doctor("Admin", "D000", doctorOrders, inventory);
+        Doctor[] doctors = new Doctor[4];
+        doctors[0]=new Doctor("Mohamed_Gamal", "D001", doctorOrders1, inventory);
+        doctors[1]=new Doctor("Kareem_badr", "D002", doctorOrders2, inventory);
+        doctors[2]=new Doctor("Abdo_Hamada", "D003", doctorOrders3, inventory);
+        doctors[3]=new Doctor("Zizo", "D004", doctorOrders4, inventory);
         System.out.println("Doctor login:");
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
         Login doctorLogin = new Login(username, password);
+        for (int i = 0; i < 4; ++i) {
+            if (doctors[i].getName().equals(username)) {
+                doctor = doctors[i];
+                break;
+            }
+        }
         while (!doctorLogin.login()) {
             System.out.println("Login failed, Try Again.");
             System.out.print("Enter username: ");
@@ -45,16 +60,51 @@ public class Main {
             System.out.print("Enter password: ");
             password = scanner.nextLine();
             doctorLogin = new Login(username, password);
+            for (int i = 0; i < 4; ++i) {
+                if (doctors[i].getName().equals(username)) {
+                    doctor = doctors[i];
+                    break;
+                }
+            }
         }
         int backTOMenu = 0;
         while (true) {
+            if (doctorLogin.loginStatus() == false) {
+                System.out.println("Doctor login:");
+                System.out.print("Enter username: ");
+                username = scanner.nextLine();
+                System.out.print("Enter password: ");
+                password = scanner.nextLine();
+                doctorLogin = new Login(username, password);
+                for (int i = 0; i < 4; ++i) {
+                    if (doctors[i].getName().equals(username)) {
+                        doctor = doctors[i];
+                        break;
+                    }
+                }
+                while (!doctorLogin.login()) {
+                    System.out.println("Login failed, Try Again.");
+                    System.out.print("Enter username: ");
+                    username = scanner.nextLine();
+                    System.out.print("Enter password: ");
+                    password = scanner.nextLine();
+                    doctorLogin = new Login(username, password);
+                    for (int i = 0; i < 4; ++i) {
+                        if (doctors[i].getName().equals(username)) {
+                            doctor = doctors[i];
+                            break;
+                        }
+                    }
+                }
+            }
             System.out.println("\nMenu:");
             System.out.println("1. Create new order");
             System.out.println("2. View inventory");
             System.out.println("3. Update inventory");
             System.out.println("4. Add product to inventory");
             System.out.println("5. Display All Doctor's Orders");
-            System.out.println("6. Exit");
+            System.out.println("6. Log Out");
+            System.out.println("7. Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -163,7 +213,9 @@ public class Main {
                     break;
                 case 6:
                     doctorLogin.logout();
-                    System.out.println("Exiting program.");
+                    break;
+                case 7:
+                System.out.println("Exiting program.");
                     scanner.close();
                     return;
                 default:
